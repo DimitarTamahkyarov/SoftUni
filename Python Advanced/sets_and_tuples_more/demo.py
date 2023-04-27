@@ -1,5 +1,3 @@
-from functools import reduce
+matrix = [[input() for col in range(2)] for row in range(2)]
 
-my_list = []
-
-print(reduce(lambda a, b: a+b, my_list))
+print(matrix)
