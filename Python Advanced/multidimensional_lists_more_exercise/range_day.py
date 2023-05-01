@@ -32,14 +32,11 @@ for _ in range(int(input())):
 
     if command == "move":
         steps = int(info[2])
-        for _ in range(steps):
-            curr_pos_row += directions[direction][0]
-            curr_pos_col += directions[direction][1]
-            if not (0 <= curr_pos_row < 5 and 0 <= curr_pos_col < 5) or matrix[curr_pos_row][curr_pos_col] == "x":
-                break
-            else:
-                r = curr_pos_row
-                c = curr_pos_col
+        curr_pos_row += directions[direction][0] * steps
+        curr_pos_col += directions[direction][1] * steps
+        if 0 <= curr_pos_row < 5 and 0 <= curr_pos_col < 5 and matrix[curr_pos_row][curr_pos_col] != "x":
+            r = curr_pos_row
+            c = curr_pos_col
 
     elif command == "shoot":
         while True:
