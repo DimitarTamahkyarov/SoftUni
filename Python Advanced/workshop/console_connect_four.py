@@ -1,4 +1,6 @@
-def create_field(row: int, col: int):
+def create_field():
+    row = int(input("Please insert rows: "))
+    col = int(input("Please insert cols: "))
     while row < 4:
         print("The rows must be 4 or more!")
         row = int(input("Please, insert valid number for col! "))
@@ -8,13 +10,14 @@ def create_field(row: int, col: int):
         col = int(input("Please, insert valid number for col! "))
         print()
 
-    matrix = [[0 for _ in range(col)] for _ in range(row)]
-
-    return matrix
+    return [[0 for _ in range(col)] for _ in range(row)]
 
 
-def player_action(player: int, num: int, matrix: list):
-    player_choice = int(num)-1
+def player_action(player: int, matrix: list):
+    player_choice = int(input("Player 1, please choose c column: ")) - 1
+    while not (0 <= player_choice < len(matrix[0])):
+        print(f"Invalid input. The number must be between 0 and {len(matrix[0])}.Try again!")
+        player_choice = int(input())
     for i in range(len(matrix)-1, -1, -1):
         if matrix[i][player_choice] == 0:
             matrix[i][player_choice] = player
@@ -22,6 +25,17 @@ def player_action(player: int, num: int, matrix: list):
 
 
 def check_for_winner(matrix: list, r, c):
+    directions = {
+        "up": [(-1, 0), (-2, 0), (-3, 0)],
+        "down": [(1, 0), (2, 0), (3, 0)],
+        "left": [(0, -1), (0, -2), (0, -3)],
+        "right": [(0, 1), (0, 2), (0, 3)],
+        "down right diagonal": [(1, 1), (2, 2), (3, 3)],
+        "up right diagonal": [(-1, 1), (-2, 2), (-3, 3)],
+        "up left diagonal": [(-1, -1), (-2, -2), (-3, -3)],
+        "down left diagonal": [(1, -1), (2, -2), (3, -3)]
+    }
+
     winner = 0
     el = matrix[r][c]
     row_size = len(matrix)
@@ -50,32 +64,20 @@ def print_matrix(matrix):
     for line in matrix:
         print(line)
 
+
 # >-------------------> Program Start From Here <-------------------<
 
-directions = {
-    "up": [(-1, 0), (-2, 0), (-3, 0)],
-    "down": [(1, 0), (2, 0), (3, 0)],
-    "left": [(0, -1), (0, -2), (0, -3)],
-    "right": [(0, 1), (0, 2), (0, 3)],
-    "down right diagonal": [(1, 1), (2, 2), (3, 3)],
-    "up right diagonal": [(-1, 1), (-2, 2), (-3, 3)],
-    "up left diagonal": [(-1, -1), (-2, -2), (-3, -3)],
-    "down left diagonal": [(1, -1), (2, -2), (3, -3)]
-}
-
-rows = int(input("Please insert rows: "))
-cols = int(input("Please insert cols: "))
-field = create_field(rows, cols)
-counter = 0
+field = create_field()
+player = 0
 while True:
-    counter += 1
-    row = 0
-    col = 0
-    if counter % 2 == 1:
-        row, col = player_action(1, int(input("Player 1, please choose c column: ")), field)
-    else:
-        row, col = player_action(2, int(input("Player 2, please choose c column: ")), field)
+    player += 1
+    row, col = 0, 0
 
+    if player == 3:
+        player = 1
+
+    row, col = player_action(player, field)
+    
     print_matrix(field)
 
     result = check_for_winner(field, row, col)
