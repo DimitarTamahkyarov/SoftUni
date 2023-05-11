@@ -69,6 +69,7 @@ def print_matrix(matrix):
 
 field = create_field()
 player = 0
+
 while True:
     player += 1
     row, col = 0, 0
@@ -77,10 +78,11 @@ while True:
         player = 1
 
     row, col = player_action(player, field)
-    
+
     print_matrix(field)
 
     result = check_for_winner(field, row, col)
+
     if result != 0:
         print(f"The Winner is {result}")
         break
