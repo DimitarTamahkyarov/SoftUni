@@ -14,7 +14,7 @@ def create_field():
 
 
 def player_action(player: int, matrix: list):
-    player_choice = int(input("Player 1, please choose c column: ")) - 1
+    player_choice = int(input(f"Player {player}, please choose c column: ")) - 1
     while not (0 <= player_choice < len(matrix[0])):
         print(f"Invalid input. The number must be between 0 and {len(matrix[0])}.Try again!")
         player_choice = int(input())
