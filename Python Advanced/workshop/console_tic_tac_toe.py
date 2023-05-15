@@ -42,7 +42,7 @@ def print_matrix(matrix):
     print(f"| {result[6]} | {result[7]} | {result[8]} |")
 
 
-# The program start from here
+# Start block
 
 current_player = input("Player one name: ")
 other_player = input("Player two name: ")
@@ -60,6 +60,8 @@ print("| 1 | 2 | 3 |")
 print("| 4 | 5 | 6 |")
 print("| 7 | 8 | 9 |")
 print(f"{current_player} start first!")
+
+# Play block
 
 while True:
     print(f"{current_player} choose a free position [1-9]:", end=" ")
