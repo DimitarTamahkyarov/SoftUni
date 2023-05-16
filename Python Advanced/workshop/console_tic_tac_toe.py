@@ -1,4 +1,4 @@
-def take_and_check_the_number(num: int, matrix: list):
+def take_and_check_the_number(num: str, matrix: list):
     while True:
         try:
             num = int(num)
@@ -31,8 +31,14 @@ def player_action(number, mark, matrix):
                 matrix[row][col] = mark
 
 
-def win(matrix):
-    pass
+def win(matrix, mark):
+    main_diagonal_win = all(matrix[i][i] == mark for i in range(3))
+    second_diagonal_win = all(matrix[i][3 - 1 - i] == mark for i in range(3))
+    row_win = any([all([matrix[r][c] == mark for c in range(3)]) for r in range(3)])
+    col_win = any([all([matrix[r][c] == mark for r in range(3)]) for c in range(3)])
+
+    return any([main_diagonal_win, second_diagonal_win, row_win, col_win])
+
 
 
 def print_matrix(matrix):
@@ -47,6 +53,7 @@ def print_matrix(matrix):
     print(f"| {result[0]} | {result[1]} | {result[2]} |")
     print(f"| {result[3]} | {result[4]} | {result[5]} |")
     print(f"| {result[6]} | {result[7]} | {result[8]} |")
+    print()
 
 
 # Initialize the players
@@ -81,6 +88,7 @@ while True:
     print("| 4 | 5 | 6 |")
     print("| 7 | 8 | 9 |")
     print(f"{current_player} start first!")
+    print()
 
     # Play block
 
@@ -93,20 +101,22 @@ while True:
 
         print_matrix(board)
 
+        if win(board, player_mark):
+            print(f"{current_player} won!")
+            break
+
         current_player, other_player = other_player, current_player
         current_player_choice, other_player_choice = other_player_choice, current_player_choice
 
-        if win(board):
-            break
     decision = input("Do you want another game? 'Y' or 'N'").upper()
     while decision not in ["Y", "N"]:
-        print("I dont understand you. Try again!")
+        print("I don't understand you. Try again!")
         decision = input("Do you want another game? 'Y' or 'N'").upper()
 
     if decision == "N":
-        print(f"The Final Result is ")
+        print("Thank you for the game. I hope see you again soon.")
         break
     elif decision == "Y":
-        print("The Result is ")
+        print("OK, let's start again!")
 
 
