@@ -1,3 +1,6 @@
+from pyfiglet import Figlet
+
+
 def take_and_check_the_number(num: str, matrix: list):
     while True:
         try:
@@ -64,7 +67,8 @@ def print_matrix(matrix):
 
 
 # Initialize the players
-
+figlet = Figlet(font="big")
+print(figlet.renderText("Tic Tac Toe"))
 current_player = input("Player one name: ")
 other_player = input("Player two name: ")
 result = {current_player: 0, other_player: 0}
