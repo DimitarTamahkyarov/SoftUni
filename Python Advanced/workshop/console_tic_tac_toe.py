@@ -39,6 +39,13 @@ def win(matrix, mark):
 
     return any([main_diagonal_win, second_diagonal_win, row_win, col_win])
 
+def draw(matrix):
+    for r in range(3):
+        for c in range(3):
+            if matrix[r][c] not in ["X", "O"]:
+                return False
+
+    return True
 
 
 def print_matrix(matrix):
@@ -103,6 +110,10 @@ while True:
 
         if win(board, player_mark):
             print(f"{current_player} won!")
+            break
+
+        if draw(board):
+            print("Tha game is draw!")
             break
 
         current_player, other_player = other_player, current_player
