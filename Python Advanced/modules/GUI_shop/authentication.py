@@ -4,6 +4,7 @@ import string
 
 from canvas import root, frame
 from helpers import clean_screen
+from products_page import display_products
 
 
 def get_users_data():
@@ -38,11 +39,15 @@ def render_entry():
         borderwidth=0,
         width=11,
         height=2,
+        command=login,
         font=15
     )
 
     frame.create_window(250, 270, window=register_btn)
     frame.create_window(250, 320, window=login_btn)
+
+
+# -------------------------- Registration --------------------------
 
 
 def register():
@@ -82,6 +87,7 @@ def registration():
         with open("db/user_credentials_db.txt", "a") as users_file:
             dump(user_info_dict, users_file)
             users_file.write("\n")
+        display_products()
 
 
 def check_registration(dict_info: dict):
@@ -184,6 +190,60 @@ def check_registration(dict_info: dict):
     frame.delete("error")
 
     return True
+
+
+# -------------------------- Login --------------------------
+
+
+def login():
+    clean_screen()
+
+    frame.create_text(180, 250, text="Username: ", font=20)
+    frame.create_text(180, 300, text="Password: ", font=20)
+
+    frame.create_window(320, 250, window=username_box)
+    frame.create_window(320, 300, window=password_box)
+
+    login_btn = Button(
+        root,
+        text="Login",
+        font=15,
+        bg="green",
+        fg="white",
+        command=loging
+    )
+
+    frame.create_window(250, 340, window=login_btn)
+
+
+def loging():
+
+    if check_login():
+        display_products()
+    else:
+
+        frame.create_text(
+            250,
+            380,
+            text="Invalid username or password!",
+            font=20,
+            fill="red",
+            tag="error"
+        )
+
+
+def check_login():
+
+    info_data = get_users_data()
+    user_username = username_box.get()
+    user_password = password_box.get()
+
+    for record in info_data:
+        if record["username"] == user_username and record["password"] == user_password:
+
+            return True
+
+    return False
 
 
 first_name_box = Entry(root, bd=0, font=15)
