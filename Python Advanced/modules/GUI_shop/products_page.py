@@ -1,4 +1,4 @@
-from json import load
+from json import load, dump
 from tkinter import Button
 
 from PIL import ImageTk, Image
@@ -13,6 +13,9 @@ def display_products():
 
 
 def display_stock():
+
+    global products_info
+
     with open("db/product_data.json", "r") as stock:
         products_info = load(stock)
 
@@ -34,7 +37,8 @@ def display_stock():
                 text="Buy",
                 bg="green",
                 fg="white",
-                font=15
+                font=15,
+                command=lambda x=product: buy_product(x)
             )
 
             frame.create_window(400, y + 150, window=item_btn)
@@ -47,4 +51,15 @@ def display_stock():
         y += 280
 
 
+def buy_product(product):
+    products_info[product]["quantity"] -= 1
+
+    with open("db/product_data.json", "w") as stock:
+        dump(products_info, stock)
+
+    display_products()
+
+
 images = []
+products_info = {}
+

@@ -3,7 +3,7 @@ from tkinter import Button, Entry
 import string
 
 from canvas import root, frame
-from helpers import clean_screen
+from helpers import clean_screen, get_password_hash
 from products_page import display_products
 
 
@@ -80,7 +80,7 @@ def registration():
         "first_name": first_name_box.get(),
         "last_name": last_name_box.get(),
         "username": username_box.get(),
-        "password": password_box.get()
+        "password": get_password_hash(password_box.get())
     }
 
     if check_registration(user_info_dict):
@@ -236,7 +236,7 @@ def check_login():
 
     info_data = get_users_data()
     user_username = username_box.get()
-    user_password = password_box.get()
+    user_password = get_password_hash(password_box.get())
 
     for record in info_data:
         if record["username"] == user_username and record["password"] == user_password:
@@ -246,7 +246,13 @@ def check_login():
     return False
 
 
+def check_if_login_is_fullfilled(event):
+    print("key")
+
+
 first_name_box = Entry(root, bd=0, font=15)
 last_name_box = Entry(root, bd=0, font=15)
 username_box = Entry(root, bd=0, font=15)
 password_box = Entry(root, bd=0, font=15, show="*")
+
+root.bind("<KeyRelease>", check_if_login_is_fullfilled)
