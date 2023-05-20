@@ -204,16 +204,7 @@ def login():
     frame.create_window(320, 250, window=username_box)
     frame.create_window(320, 300, window=password_box)
 
-    login_btn = Button(
-        root,
-        text="Login",
-        font=15,
-        bg="green",
-        fg="white",
-        command=loging
-    )
-
-    frame.create_window(250, 340, window=login_btn)
+    frame.create_window(250, 340, window=loging_btn)
 
 
 def loging():
@@ -247,12 +238,33 @@ def check_login():
 
 
 def check_if_login_is_fullfilled(event):
-    print("key")
+    login_box_info = {
+        "username": username_box.get(),
+        "password": password_box.get()
+    }
+
+    for el in login_box_info.values():
+        if not el.strip():
+            loging_btn["state"] = "disabled"
+            break
+    else:
+        loging_btn["state"] = "normal"
 
 
 first_name_box = Entry(root, bd=0, font=15)
 last_name_box = Entry(root, bd=0, font=15)
 username_box = Entry(root, bd=0, font=15)
 password_box = Entry(root, bd=0, font=15, show="*")
+
+loging_btn = Button(
+        root,
+        text="Login",
+        font=15,
+        bg="green",
+        fg="white",
+        command=loging
+    )
+
+loging_btn["state"] = "disabled"
 
 root.bind("<KeyRelease>", check_if_login_is_fullfilled)
