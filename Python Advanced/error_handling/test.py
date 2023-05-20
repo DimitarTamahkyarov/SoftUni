@@ -1,4 +1,3 @@
-import os
+nums = []
 
-# Create a new directory
-os.remove('my_folder')
+print(nums.pop())
