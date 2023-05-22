@@ -1,3 +1,3 @@
-nums = []
+player_one_pos = input()[1:-1].split(", ")
 
-print(nums.pop())
+print(player_one_pos)
