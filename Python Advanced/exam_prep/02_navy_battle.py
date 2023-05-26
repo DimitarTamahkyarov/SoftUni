@@ -1,6 +1,7 @@
 size = int(input())
 
 battle_field = [[char for char in input()] for row in range(size)]
+# battle_field = [list(input()) for row in range(size)]
 submarine_pos = []
 submarine_damage = 0
 hit_ships = 0
