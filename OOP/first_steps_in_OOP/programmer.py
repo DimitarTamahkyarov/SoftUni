@@ -12,14 +12,15 @@ class Programmer:
             return f"{self.name} does not know {language}"
 
     def change_language(self, new_language, skills_neaded):
-        if new_language != self.language and skills_neaded <= self.skills:
-            old_language = self.language
-            self.language = new_language
-            return f"{self.name} switched from {old_language} to {new_language}"
-        elif skills_neaded <= self.skills and new_language == self.language:
+        if skills_neaded <= self.skills:
+            if new_language != self.language:
+                old_language = self.language
+                self.language = new_language
+                return f"{self.name} switched from {old_language} to {new_language}"
+
             return f"{self.name} already knows {new_language}"
-        elif new_language != self.language and skills_neaded > self.skills:
-            return f"{self.name} needs {skills_neaded - self.skills} more skills"
+
+        return f"{self.name} needs {skills_neaded - self.skills} more skills"
 
 
 programmer = Programmer("John", "Java", 50)
