@@ -24,5 +24,6 @@ class Player:
         for k, v in self.skills.items():
             result.append(f"==={k} - {v}")
 
-        return result
+        return "\n".join(result)
+
 
