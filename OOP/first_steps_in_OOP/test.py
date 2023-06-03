@@ -1,7 +1,5 @@
-x = "Global"
+my_list = [1,2,3]
 
-def some_func():
-    x = "non global"
-    return x
+my_list[7] = 4
 
-print(some_func())
+print(my_list)
