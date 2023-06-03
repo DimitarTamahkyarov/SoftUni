@@ -6,7 +6,7 @@ from project.song import Song
 class Album:
     def __init__(self, name: str, *songs):
         self.name = name
-        self.songs: List[Song] = [song for song in songs]  # TODO Check
+        self.songs: List[Song] = [*songs]
         self.published = False
 
     def add_song(self, song: Song) -> str:
