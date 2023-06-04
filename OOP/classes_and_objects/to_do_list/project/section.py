@@ -31,7 +31,7 @@ class Section:
                 continue
 
             new_tasks.append(task)
-            
+
 
         self.tasks = new_tasks.copy()
 
