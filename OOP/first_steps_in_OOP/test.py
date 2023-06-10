@@ -1,5 +1,4 @@
-my_list = [1,2,3]
+from sketchpy import library as lib
 
-my_list[7] = 4
-
-print(my_list)
+obj = lib.rdj()
+obj.draw()
