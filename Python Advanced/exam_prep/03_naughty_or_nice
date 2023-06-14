@@ -1,0 +1,45 @@
+def naughty_or_nice_list(kids_list, *args, **kwargs):
+    kids_dict = {"Nice": [], "Naughty": [], "Not found": []}
+
+    for command in args:
+        splitted_command = command.split("-")
+        num = int(splitted_command[0])
+        kid_type = splitted_command[1]
+        kid_name = ""
+        curr_kid = ""
+        counter = 0
+        for child in kids_list:
+            if num == child[0]:
+                kid_name = child[1]
+                curr_kid = child
+                counter += 1
+            if counter == 2:
+                break
+
+        if counter == 1:
+            kids_dict[kid_type].append(kid_name)
+            kids_list.remove(curr_kid)
+
+    for kid_name, kid_type in kwargs.items():
+        counter = 0
+        curr_kid = ()
+        for child in kids_list:
+            if kid_name == child[1]:
+                curr_kid = child
+                counter += 1
+            if counter == 2:
+                break
+
+        if counter == 1:
+            kids_dict[kid_type].append(kid_name)
+            kids_list.remove(curr_kid)
+
+    for kid in kids_list:
+        kids_dict["Not found"].append(kid[1])
+
+    result = []
+    for kid_type, kids_list in kids_dict.items():
+        if kids_list:
+            result.append(f"{kid_type}: {', '.join(kids_list)}")
+
+    return "\n".join(result)
