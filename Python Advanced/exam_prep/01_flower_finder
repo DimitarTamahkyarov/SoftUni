@@ -9,11 +9,8 @@ while vowels and consonants:
     consonant = consonants.pop()
 
     for i in range(len(words)):
-        if vowel in words[i]:
-            words[i] = words[i].replace(vowel, vowel.upper())
-
-        if consonant in words[i]:
-            words[i] = words[i].replace(consonant, consonant.upper())
+        words[i] = words[i].replace(vowel, vowel.upper())
+        words[i] = words[i].replace(consonant, consonant.upper())
 
     is_found = False
 
