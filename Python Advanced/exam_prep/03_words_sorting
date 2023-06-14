@@ -1,0 +1,22 @@
+def words_sorting(*args):
+    word_sums = {}
+    total_sum = 0
+
+    for word in args:
+        word_sums[word] = sum([ord(char) for char in word])
+        total_sum += word_sums[word]
+
+    if total_sum % 2 == 0:
+        word_sums = sorted(word_sums.items(), key=lambda x: x[0])
+    else:
+        word_sums = sorted(word_sums.items(), key=lambda x: -x[1])
+
+    result = []
+
+    for word in word_sums:
+        result.append(f"{word[0]} - {word[1]}")
+
+    return "\n".join(result)
+
+
+print(words_sorting('escape', 'charm', 'eye'))
