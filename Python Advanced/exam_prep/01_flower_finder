@@ -7,16 +7,14 @@ words = ["rose", "tulip", "lotus", "daffodil"]
 while vowels and consonants:
     vowel = vowels.popleft()
     consonant = consonants.pop()
+    is_found = False
 
     for i in range(len(words)):
         words[i] = words[i].replace(vowel, vowel.upper())
         words[i] = words[i].replace(consonant, consonant.upper())
-
-    is_found = False
-
-    for word in words:
-        if word == word.upper():
-            print(f"Word found: {word.lower()}")
+        
+        if words[i] == words[i].upper():
+            print(f"Word found: {words[i].lower()}")
             is_found = True
             break
 
