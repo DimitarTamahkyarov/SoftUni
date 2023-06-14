@@ -1,0 +1,34 @@
+from collections import deque
+
+vowels = deque(input().split())
+consonants = deque(input().split())
+words = ["rose", "tulip", "lotus", "daffodil"]
+
+while vowels and consonants:
+    vowel = vowels.popleft()
+    consonant = consonants.pop()
+
+    for i in range(len(words)):
+        if vowel in words[i]:
+            words[i] = words[i].replace(vowel, vowel.upper())
+
+        if consonant in words[i]:
+            words[i] = words[i].replace(consonant, consonant.upper())
+
+    is_found = False
+
+    for word in words:
+        if word == word.upper():
+            print(f"Word found: {word.lower()}")
+            is_found = True
+            break
+
+    if is_found:
+        break
+else:
+    print("Cannot find any word!")
+
+if vowels:
+    print(f"Vowels left: {' '.join(vowels)}")
+if consonants:
+    print(f"Consonants left: {' '.join(consonants)}")
