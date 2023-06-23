@@ -26,26 +26,22 @@ class MovieWorld:
             self.dvds.append(dvd)
 
     def rent_dvd(self, customer_id: int, dvd_id: int):
-        for customer in self.customers:
+        customer = [x for x in self.customers if x.id == customer_id][0]
+        dvd = [x for x in self.dvds if x.id == dvd_id][0]
 
-            if customer.id == customer_id:
+        if dvd in customer.rented_dvds:
+            return f"{customer.name} has already rented {dvd.name}"
 
-                for dvd in customer.rented_dvds:
+        if dvd in self.dvds:
+            return "DVD is already rented"
 
-                    if dvd.id == dvd_id:
-                        return f"{customer.name} has already rented {dvd.name}"
+        if customer.age < dvd.age_restriction:
+            return f"{customer.name} should be at least {dvd.age_restriction} to rent this movie"
 
-                for dvd in self.dvds:
-                    if dvd.id == dvd_id:
-                        if dvd.is_rented:
-                            return "DVD is already rented"
-                        if customer.age < dvd.age_restriction:
-                            return f"{customer.name} should be at least {dvd.age_restriction} to rent this movie"
+        customer.rented_dvds.append(dvd)
+        dvd.is_rented = True
 
-                        customer.rented_dvds.append(dvd)
-                        dvd.is_rented = True
-
-                        return f"{customer.name} has successfully rented {dvd.name}"
+        return f"{customer.name} has successfully rented {dvd.name}"
 
     def return_dvd(self, customer_id, dvd_id):
         for customer in self.customers:

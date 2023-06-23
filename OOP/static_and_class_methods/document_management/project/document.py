@@ -11,10 +11,10 @@ class Document:
         self.tags = []
 
     @classmethod
-    def from_instances(cls, id_instance: int, category: Category, topic: Topic, file_name: str):
+    def from_instances(cls, id_instance: int, category, topic: Topic, file_name: str):
         return cls.from_instances(id_instance, category.id, topic.id, file_name)
 
-    def add_tags(self, tag_content: str):
+    def add_tag(self, tag_content: str):
         if tag_content not in self.tags:
             self.tags.append(tag_content)
 
@@ -29,5 +29,5 @@ class Document:
         return f"Document {self.id}: {self.file_name}; category {self.category_id}, topic {self.topic_id}, " \
                f"tags: {', '.join(self.tags)}"
 
-    
+
 
