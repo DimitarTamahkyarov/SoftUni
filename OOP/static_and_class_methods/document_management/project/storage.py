@@ -14,6 +14,7 @@ class Storage:
         for obj in colection:
             if obj.id == object_id:
                 return obj
+
     def add_category(self, category: Category):
         if category not in self.categories:
             self.categories.append(category)
