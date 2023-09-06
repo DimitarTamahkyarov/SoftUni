@@ -4,39 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b65db33a-cafc-403d-abd9-c55de35c3a80" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/exam_prep/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/first_problem/project/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/first_problem/project/band.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/first_problem/project/band_members/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/first_problem/project/band_members/drummer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/first_problem/project/band_members/guitarist.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/first_problem/project/band_members/musician.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/first_problem/project/band_members/singer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/first_problem/project/concert.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/first_problem/project/concert_tracker_app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/first_problem/project/run.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/second_problem/project/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/second_problem/project/test/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/second_problem/project/test/test_truck_driver.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exam_prep/second_problem/project/truck_driver.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/band.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/band_members/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/band_members/drummer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/band_members/guitarist.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/band_members/musician.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/band_members/singer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/concert.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/concert_tracker_app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/OOP.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/example.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/Exercise-Resources/04. Student_Skeleton/student/tests/test_student.py" beforeDir="false" afterPath="$PROJECT_DIR$/testing/Exercise-Resources/04. Student_Skeleton/student/tests/test_student.py" afterDir="false" />
-    </list>
+    <list default="true" id="b65db33a-cafc-403d-abd9-c55de35c3a80" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
