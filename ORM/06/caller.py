@@ -45,5 +45,15 @@ def add_song_to_artist(artist_name: str, song_title: str):
 
 def get_songs_by_artist(artist_name: str):
     artist = Artist.objects.get(name=artist_name)
-    songs = artist.
+
+    return artist.songs.all().order_by('-id')
+
+
+def remove_song_from_artist(artist_name: str, song_title: str):
+    artist = Artist.objects.get(name=artist_name)
+    song = Song.objects.get(title=song_title)
+
+    artist.songs.remove(song)
+
+
 
