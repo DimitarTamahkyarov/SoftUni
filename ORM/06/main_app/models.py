@@ -48,6 +48,9 @@ class DrivingLicense(models.Model):
 class Owner(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Car(models.Model):
     model = models.CharField(max_length=50)
@@ -58,6 +61,6 @@ class Car(models.Model):
 class Registration(models.Model):
     registration_number = models.CharField(max_length=10, unique=True)
     registration_date = models.DateField(null=True, blank=True)
-    car = models.OneToOneField(Car, on_delete=CASCADE, null=True, blank=True, related_name='registration')
+    car = models.OneToOneField(Car, on_delete=CASCADE, null=True, blank=True)
 
 
