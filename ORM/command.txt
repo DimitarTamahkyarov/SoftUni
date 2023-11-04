@@ -1,0 +1,50 @@
+python -m venv ./venv
+venv\Scripts\activate
+
+pip install -r requirements.txt
+pip install psycopg2
+pip freeze > requirements.txt
+
+pip install ipython
+python manage.py shell
+
+python manage.py dbshell
+
+python manage.py makemigrations
+python manage.py migrate 
+python manage.py migrate main_app 
+python manage.py migrate main_app 0001
+python manage.py showmigrations
+python manage.py squashmigrations
+
+python manage.py makemigrations main_app --empty
+python manage.py makemigrations main_app --name migrate_unique_brands --empty
+
+python manage.py runserver
+python manage.py createsuperuser
+
+python manage.py --help
+python manage.py flush
+
+python manage.py sqlmigrate main_app 0001_initial
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
