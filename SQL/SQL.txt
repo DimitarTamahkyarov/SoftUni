@@ -1,0 +1,1130 @@
+------------------------------------------------------------ CREATE TABLE
+
+CREATE TABLE IF NOT EXISTS minions (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(30),
+	age INTEGER
+);
+
+------------------------------------------------------------ CREATE TABLE
+
+CREATE TABLE minions_birthdays (
+	id INTEGER UNIQUE NOT NULL,
+	name VARCHAR(50),
+	date_of_birth DATE,
+	age INTEGER,
+	present VARCHAR(100),
+	party TIMESTAMPTZ
+);
+
+------------------------------------------------------------ CREATE TABLE
+
+CREATE TABLE company_chart AS
+SELECT 
+	CONCAT_WS(' ', first_name, last_name) AS "Full Name",
+	job_title AS "Job Title",
+	department_id AS "Department ID",
+	manager_id AS "Manager ID"
+FROM
+	employees;
+	
+------------------------------------------------------------ INSERT INTO
+
+INSERT INTO minions_info 
+	(name, code, task, banana, email, equipped, mood)
+VALUES 
+	('Mark', 'GKYA', 'Graphing Points', 3265.265, 'mark@minion.com', false, 'happy'),
+	('Mel', 'HSK', 'Science Investigation', 54784.996, 'mel@minion.com', true, 'stressed'),
+	('Bob', 'HF', 'Painting', 35.652, 'bob@minion.com', true, 'happy'),
+	('Darwin', 'EHND', 'Create a Digital Greeting', 321.958, 'darwin@minion.com', false, 'relaxed'),
+	('Kevin', 'KMHD', 'Construct with Virtual Blocks', 35214.789, 'kevin@minion.com', false, 'happy'),
+	('Norbert', 'FEWB', 'Testing', 3265.500, 'norbert@minion.com', true, 'sad'),
+	('Donny', 'L', 'Make a Map', 8.452, 'donny@minion.com', true, 'happy');
+
+------------------------------------------------------------ INSERT INTO
+
+INSERT INTO
+    clients (full_name, phone_number)
+SELECT
+    CONCAT(first_name, ' ', last_name) AS full_name,
+    CONCAT('(088) 9999', (id * 2))
+FROM
+    drivers
+WHERE
+    id BETWEEN 10 AND 20
+
+
+------------------------------------------------------------ TRUNCATE TABLE
+
+TRUNCATE TABLE minions_info;
+
+------------------------------------------------------------ DROP TABLE
+
+DROP TABLE minions_birthdays;
+
+------------------------------------------------------------ DROP DATABASE
+
+DROP DATABASE minions_db;
+
+------------------------------------------------------------ DELETE
+
+DELETE FROM 
+	addresses
+WHERE city_id IN (5, 17, 20, 30);
+
+------------------------------------------------------------ UPDATE
+
+UPDATE projects
+SET end_date = start_date + INTERVAL '5 months'
+WHERE end_date IS NULL;
+
+------------------------------------------------------------ UPDATE
+
+UPDATE 
+	employees
+SET 
+	salary = salary + 1500,
+	job_title = CONCAT_WS(' ', 'Senior', job_title)
+WHERE hire_date BETWEEN '1998-01-01' AND '2000-01-05';
+	
+------------------------------------------------------------ CREATE TYPE
+
+CREATE TYPE type_mode
+AS ENUM (
+	'happy', 
+	'relaxed', 
+	'stressed', 
+	'sad'
+);
+
+------------------------------------------------------------ ALTER TABLE / RENAME TABLE
+
+ALTER TABLE minions
+RENAME TO minions_info; 
+
+------------------------------------------------------------ ALTER TABLE / RENAME COLUMN
+
+ALTER TABLE minions_info
+RENAME COLUMN salary TO banana;
+
+------------------------------------------------------------ ALTER TABLE / ADD COLUMN
+
+ALTER TABLE minions_info
+
+ADD COLUMN code CHAR(4),
+ADD COLUMN task TEXT,
+ADD COLUMN salary NUMERIC(8, 3)
+ADD COLUMN email VARCHAR(20),
+ADD COLUMN equipped BOOLEAN NOT NULL;
+
+------------------------------------------------------------ ALTER TABLE / ADD TYPE
+
+ALTER TABLE minions_info
+ADD COLUMN mood type_mode;
+
+------------------------------------------------------------ ALTER TABLE / ALTER COLUMN
+
+ALTER TABLE minions_info
+ALTER COLUMN age SET DEFAULT 0,
+ALTER COLUMN "name" SET DEFAULT '',
+ALTER COLUMN code SET DEFAULT '';
+
+------------------------------------------------------------ ALTER TABLE / ADD CONSTRAINT
+
+ALTER TABLE minions_info
+
+ADD CONSTRAINT unique_containt
+UNIQUE (id, email),
+
+ADD CONSTRAINT banana_check
+CHECK (banana > 0);
+
+------------------------------------------------------------ ALTER TABLE / CHANGE TYPE
+
+ALTER TABLE minions_info
+ALTER COLUMN task TYPE VARCHAR(150);
+
+------------------------------------------------------------ ALTER TABLE / DROP CONSTRAINT
+
+ALTER TABLE minions_info
+ALTER COLUMN equipped
+DROP NOT NULL;
+
+------------------------------------------------------------ ALTER TABLE / DROP COLUMN
+
+ALTER TABLE minions_info
+DROP COLUMN age;
+
+------------------------------------------------------------ SELECT
+
+SELECT * FROM minions_info;
+
+------------------------------------------------------------ SELECT
+
+SELECT 
+	name, task, email, banana 
+FROM 
+	minions_info
+;
+
+------------------------------------------------------------ SELECT CONCAT
+
+SELECT 
+	CONCAT(name, ' ', state) AS "Cities Information",
+	area AS "Area (km2)"
+FROM 
+	cities;
+
+------------------------------------------------------------ SELECT DISTINCT
+
+SELECT DISTINCT
+	name,
+	area AS "Area (km2)"
+FROM 
+	cities
+ORDER BY name DESC;
+
+------------------------------------------------------------ SELECT LIMIT
+
+SELECT
+	id AS "ID",
+	CONCAT_WS(' ', first_name, last_name) AS "Full Name",
+	job_title AS "Job Title"
+FROM
+	employees
+ORDER BY first_name
+LIMIT 50;
+
+------------------------------------------------------------ SELECT OFFSET
+
+SELECT
+	id AS "ID",
+	CONCAT_WS(' ', first_name, middle_name, last_name) AS "Full Name",
+	hire_date AS "Hire Date"
+FROM
+	employees
+ORDER BY hire_date
+OFFSET 9;
+
+------------------------------------------------------------ SELECT WHERE
+
+SELECT
+	id,
+	CONCAT_WS(' ', number, street) AS "Address",
+	city_id
+FROM
+	addresses
+WHERE id >= 20
+
+------------------------------------------------------------ SELECT WHERE
+
+SELECT
+	CONCAT_WS(' ', number, street) AS "Address",
+	city_id
+FROM
+	addresses
+WHERE city_id > 0 AND city_id % 2 = 0
+ORDER BY city_id;
+
+------------------------------------------------------------ SELECT WHERE
+
+SELECT 
+	number,
+	street
+FROM
+	addresses
+WHERE (id BETWEEN 50 AND 100) OR number < 1000;
+
+------------------------------------------------------------ SELECT WHERE
+
+SELECT
+	name,
+	start_date
+FROM
+	projects
+WHERE name IN ('Mountain', 'Road', 'Touring')
+LIMIT 20;
+
+------------------------------------------------------------ CREATE VIEW
+
+CREATE OR REPLACE VIEW view_company_chart AS
+
+SELECT
+	"Full Name",
+	"Job Title"
+FROM
+	company_chart
+WHERE
+	"Manager ID" = 184;
+
+------------------------------------------------------------ CREATE VIEW
+
+CREATE OR REPLACE VIEW 
+	view_continents_countries_currencies_details
+AS SELECT
+	CONCAT_WS(': ', c.continent_name, c.continent_code) AS "Continent Details",
+	CONCAT_WS(' - ', co.country_name, co.capital, co.area_in_sq_km, 'km2') AS "Country Information",
+	CONCAT(cur.description, ' (', cur.currency_code, ')') AS "Currencies"
+FROM
+	continents AS c,
+	countries AS co,
+	currencies AS cur
+WHERE
+	co.continent_code = c.continent_code
+	AND
+	co.currency_code = cur.currency_code
+ORDER BY 
+	"Country Information" ASC, 
+	"Currencies" ASC;
+	
+------------------------------------------------------------ RENAME VIEW
+
+ALTER VIEW
+	view_addresses
+RENAME TO 
+	view_employee_addresses_info;
+
+------------------------------------------------------------ DROP VIEW
+
+DROP VIEW view_company_chart;
+
+------------------------------------------------------------ JOIN
+
+CREATE VIEW view_addresses AS
+
+SELECT
+	CONCAT_WS(' ', e.first_name, e.last_name) AS "Full Name",
+	e.department_id,
+	CONCAT_WS(' ', a.number, a.street) AS "Address"
+FROM
+	employees AS e
+JOIN
+	addresses AS a
+ON
+	e.address_id = a.id
+ORDED BY
+	"Address" ASC;
+
+------------------------------------------------------------ JOIN JOIN
+
+CREATE VIEW 
+	view_continents_countries_currencies_details
+AS SELECT
+	CONCAT_WS(': ', c.continent_name, c.continent_code) AS "Continent Details",
+	CONCAT_WS(' - ', co.country_name, co.capital, co.area_in_sq_km, 'km2') AS "Country Information",
+	CONCAT(cur.description, ' (', cur.currency_code, ')') AS "Currencies"
+FROM
+	continents AS c
+JOIN
+	countries AS co
+ON
+	co.continent_code = c.continent_code
+JOIN
+	currencies AS cur
+ON
+	co.currency_code = cur.currency_code
+ORDER BY "Country Information", "Currencies" ASC;
+
+------------------------------------------------------------ SUBSTRING
+ 
+CREATE VIEW 
+	view_initials
+AS
+SELECT
+	SUBSTRING(first_name, 1, 2) AS initial,
+	last_name
+FROM
+	employees
+ORDER BY last_name;
+
+------------------------------------------------------------ SUBSTRING
+
+SELECT 
+	SUBSTRING(description, 5) AS "substring"
+FROM 
+	currencies;
+
+------------------------------------------------------------ SUBSTRING
+
+SELECT 
+	SUBSTRING("River Information", '[0-9]{1,4}') AS river_length
+FROM 
+	view_river_info;
+
+------------------------------------------------------------ LIKE
+
+SELECT 
+	name,
+	start_date
+FROM
+	projects
+WHERE
+	name LIKE 'MOUNT%';
+	
+------------------------------------------------------------ LIKE
+
+SELECT
+	companion_full_name,
+	email
+FROM
+	users
+WHERE
+	LOWER(companion_full_name) LIKE '%and%'
+	AND
+	email NOT LIKE '%@gmail'
+
+------------------------------------------------------------ REPLACE
+
+SELECT 
+	REPLACE(mountain_range, 'a', '@') AS "replace_a",
+	REPLACE(mountain_range, 'A', '$') AS "replace_A"
+FROM 
+	mountains;
+
+------------------------------------------------------------ TRANSLATE
+
+SELECT 
+	capital,
+	TRANSLATE(capital, 'áãåçéíñóú', 'aaaceinou') AS "translated_name"
+FROM 
+	countries;
+
+------------------------------------------------------------ TRIM
+
+SELECT 
+	continent_name,
+	TRIM(continent_name)
+FROM 
+	continents;
+
+------------------------------------------------------------ TRIM
+
+SELECT 
+	LTRIM(peak_name, 'M') AS "Left Trim",
+	RTRIM(peak_name, 'm') AS "Right Trim"
+FROM 
+	peaks;
+	
+------------------------------------------------------------ TRIM
+
+SELECT
+    name AS volunteers,
+    phone_number,
+    LTRIM(address, 'Sofia ,')
+FROM
+    volunteers
+
+------------------------------------------------------------ LENGTH
+
+SELECT 
+	CONCAT_WS(' ', m.mountain_range, p.peak_name) AS "Mountain Information",
+	CHAR_LENGTH(CONCAT_WS(' ', m.mountain_range, p.peak_name)) AS "Characters Length",
+	BIT_LENGTH(CONCAT_WS(' ', m.mountain_range, p.peak_name)) AS "Bits of a String"
+FROM 
+	mountains AS m,
+	peaks AS p
+WHERE
+	m.id = p.mountain_id
+
+------------------------------------------------------------ CAST
+
+SELECT 
+	population,
+	LENGTH(CAST(population AS VARCHAR)) AS "length"
+FROM 
+	countries
+	
+------------------------------------------------------------ CAST
+
+CREATE TABLE 
+	bookings_calculation
+AS SELECT
+	booked_for,
+	CAST(booked_for * 50 AS NUMERIC) AS multiplication,
+	CAST(booked_for % 50 AS NUMERIC) AS modulo
+FROM
+	bookings
+WHERE
+	apartment_id = 93;
+
+------------------------------------------------------------ LEFT
+
+SELECT 
+	peak_name,
+	LEFT(peak_name, 4) AS "Positive Left",
+	LEFT(peak_name, -4) AS "Negative Left"
+FROM 
+	peaks
+
+------------------------------------------------------------RIGHT
+
+SELECT 
+	peak_name,
+	RIGHT(peak_name, 4) AS "Positive Left",
+	RIGHT(peak_name, -4) AS "Negative Left"
+FROM 
+	peaks
+	
+------------------------------------------------------------ UPPER
+
+UPDATE
+	projects
+SET
+	name = UPPER(name);
+
+------------------------------------------------------------ UPPER
+
+UPDATE
+	countries
+SET
+	iso_code = UPPER(LEFT(country_name, 3))
+WHERE
+	iso_code IS NULL;
+
+------------------------------------------------------------ LOWER
+
+UPDATE
+	countries
+SET
+	country_code = LOWER(REVERSE(country_code));
+
+------------------------------------------------------------ REPEAT
+
+SELECT
+	CONCAT_WS(' ', elevation, REPEAT('-', 3) || REPEAT('>', 2), peak_name)
+FROM
+	peaks
+WHERE
+	elevation >= 4884;
+
+------------------------------------------------------------ ROUND/TRUNC
+
+SELECT
+	latitude,
+	ROUND(latitude, 2),
+	TRUNC(latitude, 2)
+FROM
+	apartments
+
+------------------------------------------------------------ ABS
+
+SELECT
+	longitude,
+	ABS(longitude)
+FROM
+	apartments
+
+------------------------------------------------------------ DATETIME
+
+ALTER TABLE
+	bookings
+ADD COLUMN billing_day TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP;
+
+SELECT 
+	TO_CHAR(billing_day, 'DD "Day" MM "Month" YYYY "Year" HH24:MI:SS') AS "Billing Day"
+FROM
+	bookings
+
+------------------------------------------------------------ EXTRACT
+
+SELECT 
+	EXTRACT(YEAR FROM booked_at) AS "YEAR",
+	EXTRACT(MONTH FROM booked_at) AS "MONTH",
+	EXTRACT(DAY FROM booked_at) AS "DAY",
+	EXTRACT(HOUR FROM booked_at AT TIME ZONE 'UTC') AS "HOUR",
+	EXTRACT(MINUTE FROM booked_at AT TIME ZONE 'UTC') AS "MINUTE",
+	CEILING(EXTRACT(SECOND FROM booked_at AT TIME ZONE 'UTC')) AS "SECOND"
+FROM
+	bookings;
+
+------------------------------------------------------------ AGE
+
+SELECT
+	user_id,
+	AGE(starts_at, booked_at) AS "Early Birds"
+FROM
+	bookings
+WHERE
+	AGE(starts_at, booked_at) >= '10 months'
+
+------------------------------------------------------------ COUNT
+
+SELECT
+	COUNT(*)
+FROM
+	wizard_deposits;
+
+------------------------------------------------------------ SUM
+
+SELECT
+	SUM(deposit_amount)
+FROM
+	wizard_deposits;
+
+------------------------------------------------------------ GROUP BY
+
+SELECT
+	deposit_group,
+	SUM(deposit_interest) AS "Deposit Interest"
+FROM
+	wizard_deposits
+GROUP BY 
+	deposit_group
+ORDER BY 
+	"Deposit Interest" DESC
+
+------------------------------------------------------------ GROUP BY
+
+SELECT
+	magic_wand_creator,
+	MIN(magic_wand_size) AS "Minimum Wand Size"
+FROM
+	wizard_deposits
+GROUP BY 
+	magic_wand_creator
+ORDER BY 
+	"Minimum Wand Size"
+LIMIT 5
+
+------------------------------------------------------------ GROUP BY
+
+SELECT
+	deposit_group,
+	is_deposit_expired,
+	FLOOR(AVG(deposit_interest)) AS "Deposit Interest"
+FROM
+	wizard_deposits
+WHERE 
+	deposit_start_date > '1985-01-01'
+GROUP BY 
+	deposit_group, 
+	is_deposit_expired
+ORDER BY 
+	deposit_group DESC, 
+	is_deposit_expired ASC
+
+------------------------------------------------------------ GROUP BY
+
+CREATE VIEW 
+	view_wizard_deposits_with_expiration_date_before_1983_08_17
+AS SELECT
+	CONCAT(first_name, ' ', last_name) AS "Wizard Name",
+	deposit_start_date AS "Start Date", 
+	deposit_expiration_date AS "Expiration Date", 
+	deposit_amount AS "Amount"
+FROM
+	wizard_deposits
+WHERE 
+	deposit_expiration_date <= '1983-08-17'
+GROUP BY
+	"Wizard Name", "Start Date", "Expiration Date", "Amount"
+ORDER BY 
+	"Expiration Date"
+
+------------------------------------------------------------ GROUP BY
+
+SELECT
+	magic_wand_creator,
+	MAX(deposit_amount) AS "Max Deposit Amount"
+FROM
+	wizard_deposits
+GROUP BY 
+	magic_wand_creator
+HAVING 
+	MAX(deposit_amount) < 20000 OR MAX(deposit_amount) > 40000
+ORDER BY
+	"Max Deposit Amount" DESC
+LIMIT
+	3
+;
+
+------------------------------------------------------------ CASE
+
+SELECT
+	CASE
+		WHEN age <= 10 THEN  '[0-10]'
+		WHEN age <= 20 THEN  '[11-20]'
+		WHEN age <= 30 THEN  '[21-30]'
+		WHEN age <= 40 THEN  '[31-40]'
+		WHEN age <= 50 THEN  '[41-50]'
+		WHEN age <= 60 THEN  '[51-60]'
+		ELSE '[61+]'
+	END AS "Age Group",
+	COUNT(age)
+FROM
+	wizard_deposits
+GROUP BY 
+	"Age Group"
+ORDER BY
+	"Age Group"
+;
+
+------------------------------------------------------------ CASE
+
+SELECT
+	COUNT(CASE WHEN department_id = 1 THEN 1 END) AS "Engineering",
+	COUNT(CASE WHEN department_id = 2 THEN 1 END) AS "Tool Design",
+	COUNT(CASE WHEN department_id = 3 THEN 1 END) AS "Sales",
+	COUNT(CASE WHEN department_id = 4 THEN 1 END) AS "Marketing",
+	COUNT(CASE WHEN department_id = 5 THEN 1 END) AS "Purchasing",
+	COUNT(CASE WHEN department_id = 6 THEN 1 END) AS "Research and Development",
+	COUNT(CASE WHEN department_id = 7 THEN 1 END) AS "Production"
+FROM
+	employees
+
+------------------------------------------------------------ CASE
+
+UPDATE
+	employees
+SET 
+	salary = CASE
+		WHEN hire_date < '2015-01-16' THEN salary + 2500 
+		WHEN hire_date < '2020-03-04' THEN salary + 1500 
+		ELSE salary
+	END,
+	job_title = CASE
+		WHEN hire_date < '2015-01-16' THEN  'Senior ' || job_title
+		WHEN hire_date < '2020-03-04' THEN  'Mid-' || job_title
+		ELSE job_title
+	END
+
+------------------------------------------------------------ CASE
+
+SELECT
+	job_title,
+	CASE
+		WHEN AVG(salary) > 45800 THEN 'Good'
+		WHEN AVG(salary) >= 27500 THEN 'Medium'
+		WHEN AVG(salary) > 0 THEN 'Need Improvement'
+	END AS "Category"
+FROM
+	employees
+GROUP BY
+	job_title
+ORDER BY
+	"Category",
+	job_title
+
+------------------------------------------------------------ CASE
+
+SELECT
+	project_name,
+	CASE
+		WHEN start_date IS NULL AND end_date IS NULL THEN 'Ready for development'
+		WHEN start_date IS NOT NULL AND end_date IS NULL THEN 'In Progress'
+		ELSE 'Done'
+	END AS project_status
+FROM
+	projects
+WHERE
+	project_name LIKE '%Mountain%'
+
+------------------------------------------------------------ CASE
+
+SELECT
+	department_id,
+	COUNT(department_id) AS num_employee,
+	CASE AVG(salary) > 50000
+		WHEN TRUE THEN 'Above average'
+		WHEN FALSE THEN 'Below average'
+	END AS salary_level
+FROM
+	employees
+GROUP BY
+	department_id
+HAVING
+	AVG(salary) > 30000
+ORDER BY 
+	department_id
+
+------------------------------------------------------------ CASE
+
+CREATE VIEW 
+	view_performance_rating
+AS
+SELECT
+	first_name, 
+	last_name, 
+	job_title, 
+	salary, 
+	department_id,
+	CASE
+		WHEN salary >= 25000 THEN
+			CASE
+				WHEN job_title LIKE 'Senior%' THEN 'High-performing Senior'
+				ELSE 'High-performing Employee'
+			END
+		ELSE 'Average-performing'
+	END AS 
+		performance_rating
+FROM
+	employees
+
+------------------------------------------------------------ FOREIGN KEY
+
+CREATE TABLE 
+	employees_projects 
+	(
+		id INTEGER PRIMARY KEY,
+		employee_id INTEGER,
+		project_id INTEGER,
+		
+		FOREIGN KEY (employee_id) REFERENCES employees(id),
+		FOREIGN KEY (project_id) REFERENCES projects(id)
+	)
+
+------------------------------------------------------------ ADD PRIMARY KEY
+
+CREATE TABLE 
+	products (product_name VARCHAR(100));
+	
+INSERT INTO 
+	products (product_name)
+VALUES 
+	('Broccoli'), 
+	('Shampoo'), 
+	('Toothpaste'),
+	('Candy');
+	
+ALTER TABLE 
+	products
+ADD COLUMN
+	id SERIAL PRIMARY KEY;
+
+------------------------------------------------------------ DROP PRIMARY KEY
+
+ALTER TABLE
+	products
+DROP CONSTRAINT
+	products_pkey
+
+------------------------------------------------------------ PRIMARY KEY START WITH
+
+CREATE TABLE passworts 
+	(
+		id INT GENERATED ALWAYS AS IDENTITY (START WITH 100 INCREMENT BY 1) PRIMARY KEY,
+		nationality VARCHAR(50)
+	)
+;
+
+------------------------------------------------------------ FOREIGN KEY
+
+CREATE TABLE IF NOT EXISTS people
+	(
+		id SERIAL PRIMARY KEY,
+		first_name VARCHAR(50),
+		salary NUMERIC(10, 2),
+		passport_id INT,
+		
+		CONSTRAINT fk_people_passports
+			FOREIGN KEY (passport_id) 
+				REFERENCES passports(id)
+	)	
+
+------------------------------------------------------------ COMPOSITE FOREIGN KEY
+
+CREATE TABLE students (
+	id SERIAL PRIMARY KEY,
+	student_name VARCHAR(50)
+);
+
+CREATE TABLE exams (
+	id INT GENERATED ALWAYS AS IDENTITY (START WITH 101 INCREMENT BY 1) PRIMARY KEY,
+	exam_name VARCHAR(50)
+);
+
+CREATE TABLE study_halls (
+	id SERIAL PRIMARY KEY,
+	study_hall_name VARCHAR(50),
+	exam_id INT,
+	
+	CONSTRAINT fk_study_halls_exams
+		FOREIGN KEY (exam_id)
+			REFERENCES exams(id)
+);
+
+CREATE TABLE students_exams (
+	student_id INT,
+	exam_id INT,
+
+	CONSTRAINT pk_students_exams
+		PRIMARY KEY (student_id, exam_id)
+	
+	CONSTRAINT fk_students_exams_students
+		FOREIGN KEY (student_id)
+			REFERENCES students(id),
+	
+	CONSTRAINT fk_students_exams_exams
+		FOREIGN KEY (exam_id)
+			REFERENCES exams(id)
+);
+
+------------------------------------------------------------ SUBQUERY
+
+SELECT
+	MIN(average_area) AS min_average_area
+FROM
+(
+	SELECT
+		AVG(area_in_sq_km) AS average_area
+	FROM
+		countries
+	GROUP BY
+		continent_code
+) AS avg_countries
+
+------------------------------------------------------------ BULDIN TABLES
+
+SELECT
+	tablename, 
+	indexname, 
+	indexdef
+FROM
+	pg_indexes
+WHERE
+	schemaname = 'public'
+ORDER BY
+	tablename,
+	indexname
+
+------------------------------------------------------------ UPDATE + SUBQUERY
+
+UPDATE  
+	countries
+SET 
+	three_rivers = TRUE WHERE country_code IN (
+	SELECT
+		country_code
+	FROM
+		countries AS c
+	LEFT JOIN
+		countries_rivers AS cr
+	USING
+		(country_code)
+	GROUP BY
+		country_code
+	HAVING
+		COUNT(river_id) > 3
+);
+
+------------------------------------------------------------ FUNCTION
+
+CREATE OR REPLACE FUNCTION fn_full_name(first_name VARCHAR, last_name VARCHAR)
+RETURNS VARCHAR
+AS
+$$
+    DECLARE full_name VARCHAR;
+BEGIN
+    IF first_name IS NULL THEN
+        SELECT INITCAP(last_name) INTO full_name;
+    ELSIF last_name IS NULL THEN
+        SELECT INITCAP(first_name) INTO full_name;
+    ELSE
+       SELECT INITCAP(first_name || ' ' || last_name) INTO full_name;
+    END IF;
+    RETURN full_name;
+END;
+$$ LANGUAGE plpgsql;
+
+------------------------------------------------------------ FUNCTION RETURN TABLE
+
+CREATE OR REPLACE FUNCTION fn_is_game_over(
+    is_game_over BOOLEAN
+)
+RETURNS TABLE (
+    name VARCHAR(50),
+    game_type_id INT,
+    is_finished BOOLEAN
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT g.name, g.game_type_id, g.is_finished
+    FROM games AS g
+    WHERE g.is_finished = is_game_over;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT fn_is_game_over(true)
+
+------------------------------------------------------------ PROCEDURE
+
+CREATE OR REPLACE PROCEDURE sp_retrieving_holders_with_balance_higher_than(
+    searched_balance NUMERIC
+)
+AS
+$$
+DECLARE
+    holder_info RECORD;
+BEGIN
+    FOR
+        holder_info
+    IN
+        SELECT
+            ah.first_name || ' ' || ah.last_name AS full_name,
+            SUM(balance) AS total_balance
+        FROM
+            accounts AS a
+        JOIN
+            account_holders AS ah
+        ON
+            ah.id = a.account_holder_id
+        GROUP BY
+            full_name
+        HAVING
+            SUM(balance) > searched_balance
+        ORDER BY
+            full_name
+    LOOP
+        RAISE NOTICE '% - %', holder_info.full_name, holder_info.total_balance;
+    END LOOP;
+    RETURN;
+END;
+$$
+LANGUAGE plpgsql;
+
+CALL sp_retrieving_holders_with_balance_higher_than(200000)
+
+------------------------------------------------------------ PROCEDURE
+
+CREATE OR REPLACE PROCEDURE sp_withdraw_money(
+    account_id INT,
+    money_amount NUMERIC(4)
+)
+AS
+$$
+DECLARE
+    account_balance NUMERIC;
+BEGIN
+    account_balance := (SELECT balance FROM accounts WHERE id = account_id);
+    IF
+        account_balance >= money_amount
+    THEN
+        UPDATE
+            accounts
+        SET
+            balance = balance - money_amount
+        WHERE
+            id = account_id;
+        COMMIT;
+    ELSE
+        RAISE NOTICE 'Insufficient balance to withdraw %', money_amount;
+    END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+CALL sp_withdraw_money(6, 5437.0000)
+
+------------------------------------------------------------ PROCEDURE
+
+CREATE OR REPLACE PROCEDURE sp_transfer_money(
+    sender_id INT,
+    receiver_id INT,
+    amount NUMERIC
+)
+AS
+$$
+DECLARE
+    temp NUMERIC;
+BEGIN
+    temp := (SELECT balance FROM accounts WHERE id = sender_id) - amount;
+    IF
+        temp < 0
+    THEN
+        RETURN;
+    end if;
+
+    CALL sp_withdraw_money(sender_id, amount);
+    IF
+        (SELECT balance FROM accounts WHERE id = sender_id) <> temp
+    THEN
+        ROLLBACK;
+    END IF;
+
+    temp := (SELECT balance FROM accounts WHERE id = receiver_id) + amount;
+    CALL sp_deposit_money(receiver_id, amount);
+    IF
+        (SELECT balance FROM accounts WHERE id = receiver_id) <> temp
+    THEN
+        ROLLBACK;
+    END IF;
+
+    COMMIT;
+END;
+$$
+LANGUAGE plpgsql;
+
+------------------------------------------------------------ PROCEDURE
+
+DROP PROCEDURE sp_retrieving_holders_with_balance_higher_than
+
+------------------------------------------------------------ TRIGGER
+
+CREATE TABLE IF NOT EXISTS logs
+(
+    id         SERIAL PRIMARY KEY,
+    account_id INT,
+    old_sum    NUMERIC,
+    new_sum    NUMERIC
+);
+
+CREATE OR REPLACE FUNCTION trigger_fn_insert_new_entry_into_logs()
+    RETURNS TRIGGER
+AS
+$$
+BEGIN
+    INSERT INTO
+        logs (account_id, old_sum, new_sum)
+    VALUES
+        (OLD.id, OLD.balance, NEW.balance);
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER
+    tr_account_balance_change
+AFTER UPDATE OF
+    balance
+ON
+    accounts
+FOR EACH ROW
+WHEN (NEW.balance <> OLD.balance)
+EXECUTE FUNCTION
+    trigger_fn_insert_new_entry_into_logs();
+	
+------------------------------------------------------------ TRIGGER
+
+CREATE TABLE IF NOT EXISTS notification_emails (
+    id SERIAL PRIMARY KEY,
+    recipient_id INT,
+    subject TEXT,
+    body TEXT
+);
+
+CREATE OR REPLACE FUNCTION trigger_fn_send_email_on_balance_change()
+RETURNS TRIGGER
+AS
+$$
+BEGIN
+    INSERT INTO
+        notification_emails (recipient_id, subject, body)
+    VALUES (NEW.account_id,
+         'Balance change for account: ' || NEW.account_id,
+         CONCAT_WS(' ', 'On ', DATE(), ' your balance was changed from ', NEW.old_sum, ' to ', NEW.new_sum, '.')
+    );
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER
+    tr_send_email_on_balance_change
+AFTER UPDATE ON
+    logs
+FOR EACH ROW
+WHEN (OLD.new_sum <> NEW.new_sum)
+EXECUTE FUNCTION
+    trigger_fn_send_email_on_balance_change();
