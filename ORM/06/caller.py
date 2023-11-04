@@ -1,13 +1,13 @@
 import os
 import django
-
+from datetime import timedelta, datetime, date
 
 # Set up Django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
 # Import your models here
-from main_app.models import Author, Book, Artist, Song, Product, Review
+from main_app.models import Author, Book, Artist, Song, Product, Review, DrivingLicense, Driver
 
 
 # Create queries within functions
@@ -26,15 +26,6 @@ def show_all_authors_with_their_books():
 def delete_all_authors_without_books():
     Author.objects.filter(book__isnull=True).delete()
 
-
-#
-# # Display authors and their books
-# authors_with_books = show_all_authors_with_their_books()
-# print(authors_with_books)
-
-# Delete authors without books
-# delete_all_authors_without_books()
-# print(Author.objects.count())
 
 def add_song_to_artist(artist_name: str, song_title: str):
     artist = Artist.objects.get(name=artist_name)
@@ -75,9 +66,30 @@ def delete_products_without_reviews():
     Product.objects.filter(reviews__isnull=True).delete()
 
 
-# Run the function to get products without reviews
-products_without_reviews = get_products_with_no_reviews()
-print(f"Products without reviews: {', '.join([p.name for p in products_without_reviews])}")
-# Run the function to delete products without reviews
-delete_products_without_reviews()
-print(f"Products left: {Product.objects.count()}")
+def calculate_licenses_expiration_dates():
+    result = []
+
+    driver_licenses = DrivingLicense.objects.all().order_by('-license_number')
+
+    for driver_license in driver_licenses:
+        expiration_date = driver_license.issue_date + timedelta(days=365)
+
+        result.append(f'License with id: {driver_license.license_number} expires on {expiration_date}!')
+
+    return '\n'.join(result)
+
+
+def get_drivers_with_expired_licenses(due_date):
+    calculated_date = due_date - timedelta(days=365)
+
+    return Driver.objects.filter(license__issue_date__gt=calculated_date)
+
+
+
+
+
+# Get drivers with expired licenses
+drivers_with_expired_licenses = get_drivers_with_expired_licenses(date(2023, 1, 1))
+for driver in drivers_with_expired_licenses:
+    print(f"{driver.first_name} {driver.last_name} has to renew their driving license!")
+
