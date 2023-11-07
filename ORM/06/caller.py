@@ -101,7 +101,7 @@ def register_car_by_owner(owner: object):
     return f'Successfully registered {car.model} to {owner.name} with registration number {registration.registration_number}.'
 
 
-
+print(3 - ('a' == 'b'))
 
 
 
