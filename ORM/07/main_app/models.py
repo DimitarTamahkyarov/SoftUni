@@ -1,5 +1,6 @@
 from typing import Any
 from django.db import models
+from django.forms import ValidationError
 
 
 class BaseCharacter(models.Model):
@@ -83,17 +84,39 @@ class Message(models.Model):
     
 
 class StudentIDField(models.PositiveIntegerField):
-    def to_python(self, value: Any) -> Any:
-        try:
-            return int(value)
-        except ValueError:
-            pass
+    # def to_python(self, value: Any) -> Any:
+    #     try:
+    #         return int(value)
+    #     except ValueError:
+    #         pass
+    pass
 
     
 
 class Student(models.Model):
     name = models.CharField(max_length=100)
     student_id = StudentIDField()
+
+
+class MaskedCreditCardField(models.CharField):
+    def to_python(self, value: Any) -> Any:
+        if not isinstance(value, str):
+            raise ValidationError("The card number must be a string")
+        
+        try:
+            int(value)
+        except ValueError:
+            raise ValidationError("The card number must contain only digits")
+        
+        if len(value) != 16:
+            raise ValidationError("The card number must be exactly 16 characters long")
+        
+        return f'****-****-****-{value[-4:]}'
+
+
+class CreditCard(models.Model):
+    card_owner = models.CharField(max_length=100)
+    card_number = MaskedCreditCardField(max_length=20)
 
     
     
