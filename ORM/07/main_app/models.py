@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 
 
@@ -79,6 +80,21 @@ class Message(models.Model):
         massage = Message.objects.create(sender=sender, receiver=receiver, content=self.content)
         
         return massage
+    
+
+class StudentIDField(models.PositiveIntegerField):
+    def to_python(self, value: Any) -> Any:
+        try:
+            return int(value)
+        except ValueError:
+            pass
+
+    
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    student_id = StudentIDField()
+
     
     
         
