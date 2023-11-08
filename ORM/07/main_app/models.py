@@ -51,3 +51,35 @@ class FelbladeDemonHunter(DemonHunter):
     felblade_ability = models.CharField(max_length=100)
     
     
+class UserProfile(models.Model):
+    username = models.CharField(max_length=75, unique=True)
+    email = models.EmailField(unique=True)
+    bio = models.TextField(null=True, blank=True)
+    
+    
+class Message(models.Model):
+    sender = models.ForeignKey(to=UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(to=UserProfile, related_name='received_messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+    
+    def mark_as_read(self):
+        self.is_read = True
+        
+    def mark_as_unread(self):
+        self.is_read = False
+        
+    def reply_to_message(self, reply_content, receiver):
+        message = Message.objects.create(sender=self.receiver, receiver=receiver, content=reply_content)
+        
+        return message
+    
+    def forward_message(self, sender, receiver):
+        massage = Message.objects.create(sender=sender, receiver=receiver, content=self.content)
+        
+        return massage
+    
+    
+        
+    
