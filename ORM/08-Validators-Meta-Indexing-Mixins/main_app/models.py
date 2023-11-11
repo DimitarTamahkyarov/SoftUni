@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.db import models
 from django.core.validators import MinValueValidator, MinLengthValidator
 from main_app.mixins import RechargeEnergyMixin
+from django.contrib.postgres.search import SearchVectorField
 
 from main_app.validators import validate_only_letters_and_spaces, validate_phone_number
 
@@ -175,3 +176,10 @@ class FlashHero(Hero):
         else:
             self.energy = new_energy
             return f"{self.name} as Flash Hero runs at lightning speed, saving the day"
+          
+
+class Document(models.Model):
+
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    search_vector = SearchVectorField(null=True, blank=True, db_index=True)
