@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from decimal import Decimal
 from django.db import models
 from django.core.validators import MinValueValidator, MinLengthValidator
-
+from main_app.mixins import RechargeEnergyMixin
 
 from main_app.validators import validate_only_letters_and_spaces, validate_phone_number
 
@@ -134,3 +134,44 @@ class DiscountedProduct(Product):
 
     def calculate_price_without_discount(self):
         return self.price * Decimal(1.2)
+    
+
+class Hero(models.Model, RechargeEnergyMixin):
+    name = models.CharField(max_length=100)
+    hero_title = models.CharField(max_length=100)
+    energy = models.PositiveIntegerField()
+
+
+class SpiderHero(Hero):
+
+    class Meta:
+        proxy = True
+    
+    def swing_from_buildings(self):
+
+        ENERGY_COST = 80
+        new_energy = self.energy - ENERGY_COST
+
+        if new_energy <= 0:
+            return f"{self.name} as Spider Hero is out of web shooter fluid"
+        else:
+            self.energy = new_energy
+
+            return f"{self.name} as Spider Hero swings from buildings using web shooters"
+
+
+class FlashHero(Hero):
+
+    class Meta:
+        proxy = True
+
+    def run_at_super_speed(self):
+        ENERGY_COST = 65
+
+        new_energy = self.energy - ENERGY_COST
+
+        if new_energy <= 0:
+            return f"{self.name} as Flash Hero needs to recharge the speed force"
+        else:
+            self.energy = new_energy
+            return f"{self.name} as Flash Hero runs at lightning speed, saving the day"
