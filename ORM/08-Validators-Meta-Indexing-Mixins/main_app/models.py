@@ -157,6 +157,7 @@ class SpiderHero(Hero):
             return f"{self.name} as Spider Hero is out of web shooter fluid"
         else:
             self.energy = new_energy
+            self.save()
 
             return f"{self.name} as Spider Hero swings from buildings using web shooters"
 
@@ -175,6 +176,7 @@ class FlashHero(Hero):
             return f"{self.name} as Flash Hero needs to recharge the speed force"
         else:
             self.energy = new_energy
+            self.save()
             return f"{self.name} as Flash Hero runs at lightning speed, saving the day"
           
 
