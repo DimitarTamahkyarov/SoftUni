@@ -7,7 +7,7 @@ django.setup()
 
 # Import your models
 from main_app.models import Product, Category, Customer, Order, OrderProduct
-from django.db.models import Sum
+from django.db.models import Sum, Q, F
 
 
 # Create and check models
@@ -89,4 +89,49 @@ def product_quantity_ordered():
     return '\n'.join(result)
 
 
-print(product_quantity_ordered())
+# print(product_quantity_ordered())
+
+def ordered_products_per_customer():
+    orders = Order.objects.select_related('customer').order_by('id')
+
+    result = []
+
+    for order in orders:
+        result.append(f'Order ID: {order.id}, Customer: {order.customer.username}')
+
+    return '\n'.join(result)
+
+# print(ordered_products_per_customer())
+
+def filter_products():
+
+    query = Q(is_available=True) & Q(price__gt=3.00)
+
+    result = [
+        f"{product.name}: {product.price}lv."
+        for product in Product.objects.filter(query).order_by('-price', 'name')
+    ] 
+
+    return '\n'.join(result)
+
+# print(filter_products())
+
+def give_discount():
+
+    query = Q(is_available=True) & Q(price__gt=3.00)
+
+    Product.objects.filter(
+        query
+    ).update(
+        price=(F('price') * 0.7)
+    )
+
+    result = [
+        f"{product.name}: {product.price}lv."
+        for product in Product.objects.filter(is_available=True).order_by('-price', 'name')
+    ] 
+
+    return '\n'.join(result)
+
+
+print(give_discount())
