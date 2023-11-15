@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.db import models
-from django.db.models import QuerySet, Count, Avg
+from django.db.models import QuerySet, Count, Avg, Min, Max
 
 class RealEstateListingManager(models.Manager):
     
@@ -32,7 +32,8 @@ class VideoGameManager(models.Manager):
         return self.order_by('-rating').first()
     
     def lowest_rated_game(self):
-        return self.order_by('rating').first()
+        min_value = self.aggregate(min_value=Min('rating'))['min_value']
+        return self.filter(rating=Decimal(min_value)).first()
     
     def average_rating(self):
         result = self.aggregate(average_rating=Avg('rating'))['average_rating']
