@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.db import models
-from django.db.models import QuerySet, Count, Avg, Min, Max
+from django.db.models import QuerySet, Count, Avg, Min, Max, Q, F
 
 class RealEstateListingManager(models.Manager):
     

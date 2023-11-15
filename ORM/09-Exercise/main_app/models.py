@@ -1,7 +1,9 @@
+from datetime import timedelta
 from django.db import models
 
 from main_app.managers import RealEstateListingManager, VideoGameManager
 from main_app.validators import validate_rating, validate_release_year
+from django.db.models import QuerySet, Q, F
 
 
 # Create your models here.
@@ -115,6 +117,30 @@ class Task(models.Model):
     creation_date = models.DateField()
     completion_date = models.DateField()
 
+    @classmethod
+    def overdue_high_priority_tasks(cls):
+        query = Q(priority='High') & Q(is_completed=False) & Q(creation_date__lt=F('completion_date'))
+
+        return cls.objects.filter(query)
+    
+    @classmethod
+    def completed_mid_priority_tasks(cls):
+        query = Q(priority='Medium') & Q(is_completed=True)
+
+        return cls.objects.filter(query)
+    
+    @classmethod
+    def search_tasks(cls, subquery: str):
+        query = Q(title__icontains=subquery) | Q(description__icontains=subquery)
+
+        return cls.objects.filter(query)
+    
+    @classmethod
+    def recent_completed_tasks(cls, days: int):
+        query = Q(is_completed=True) & Q(completion_date__gte=(F('creation_date') - timedelta(days=days)))
+
+        return cls.objects.filter(query)
+
 
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
@@ -122,3 +148,27 @@ class Exercise(models.Model):
     difficulty_level = models.PositiveIntegerField()
     duration_minutes = models.PositiveIntegerField()
     repetitions = models.PositiveIntegerField()
+
+    @classmethod
+    def get_long_and_hard_exercises(cls):
+        return cls.objects.filter(
+            Q(duration_minutes__gt=30) & Q(difficulty_level__gte=10)
+        )
+    
+    @classmethod
+    def get_short_and_easy_exercises(cls):
+        return cls.objects.filter(
+            Q(duration_minutes__lt=15) & Q(difficulty_level__lt=5)
+        )
+    
+    @classmethod
+    def get_exercises_within_duration(cls, min_duration: int, max_duration: int):
+        return cls.objects.filter(
+            duration_minutes__range=(min_duration, max_duration)
+        )
+    
+    @classmethod
+    def get_exercises_with_difficulty_and_repetitions(cls, min_difficulty: int, min_repetitions: int):
+        return cls.objects.filter(
+            Q(difficulty_level__gt=min_difficulty) & Q(repetitions__gt=min_repetitions)
+        )
