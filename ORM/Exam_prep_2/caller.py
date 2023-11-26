@@ -63,6 +63,5 @@ def get_last_sold_products():
 
     return f'Last sold products: {products}'
 
-def get_top_products():
-    products = Product.
+
 
